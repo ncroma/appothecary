@@ -1,5 +1,4 @@
-export default function HomePage(props: any) {
-    console.log("props", props);
+export default function HomePage() {
     return (
         <main className="mx-auto flex min-h-screen max-w-2xl flex-col items-center justify-center gap-4 p-8 text-center">
             <h1 className="font-display text-5xl">Appothecary</h1>
