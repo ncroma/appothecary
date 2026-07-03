@@ -53,7 +53,7 @@ export default function StyleguidePage() {
                 </div>
                 <div>
                     <p className="mb-2 font-mono text-xs opacity-60">font-mono · JetBrains Mono · the values</p>
-                    <p className="max-w-prose">The kind of data it will render in the real UI, e.g. v7.42.1 · 38 MB · ★ 4.6</p>
+                    <p className="max-w-prose font-mono">v7.42.1 · 38 MB · ★ 4.6</p>
                 </div>
             </section>
 
