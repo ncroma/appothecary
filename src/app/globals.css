@@ -1,10 +1,14 @@
 @import "tailwindcss";
 
 @theme {
-  /* Apothecary starting notes — to be properly explored in design session */
-  --color-parchment: oklch(0.96 0.02 90);
-  --color-ink: oklch(0.25 0.02 60);
-  --color-tincture: oklch(0.55 0.1 150);
+    --color-*: initial;
+    --color-bottle: #111815;
+    --color-vial: #1d2822;
+    --color-foam: #eae3cf;
+    --color-elixir: #d9a441;
+    --color-herb: #7e9b78;
+    --color-oxblood: #a85944;
 
-  --font-display: ui-serif, Georgia, serif;
+    --font-display: "Hoefler Text", "Baskerville", Georgia, serif;
+    --font-mono: "Menlo", "Consolas", monospace;
 }
