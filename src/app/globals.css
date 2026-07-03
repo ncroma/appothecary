@@ -9,6 +9,7 @@
     --color-herb: #7e9b78;
     --color-oxblood: #a85944;
 
-    --font-display: "Hoefler Text", "Baskerville", Georgia, serif;
-    --font-mono: "Menlo", "Consolas", monospace;
+    --font-sans: var(--font-archivo);
+    --font-display: var(--font-caslon);
+    --font-mono: var(--font-jetbrains);
 }
