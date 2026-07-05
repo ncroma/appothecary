@@ -48,8 +48,9 @@ export async function fetchTopApps(limit: number): Promise<string[]> {
     return packages.slice(0, limit);
 }
 
-export async function fetchAppMeta(packageName: string): Promise<AppInsert | null> {
-    const res = await fetch(`${API_BASE}/app/getMeta?package_name=${encodeURIComponent(packageName)}`);
+export async function fetchAppMeta(ref: string | number): Promise<AppInsert | null> {
+    const param = typeof ref === "number" ? `app_id=${ref}` : `package_name=${encodeURIComponent(ref)}`;
+    const res = await fetch(`${API_BASE}/app/getMeta?${param}`);
     if (!res.ok) return null;
 
     const json = (await res.json()) as AptoideMeta;
