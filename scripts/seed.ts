@@ -3,6 +3,7 @@ import { db } from "../src/db";
 import { apps } from "../src/db/schema";
 import { fetchAppMeta, fetchTopApps, type AppInsert } from "../src/lib/aptoide";
 import { FAVORITES } from "./favorites";
+import { chunk } from "../src/lib/chunk";
 
 const TOP_LIMIT = 250;
 const CONCURRENCY = 4;
@@ -11,14 +12,6 @@ const BATCH_SIZE = 50;
 
 function sleep(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-function chunk<T>(items: T[], size: number): T[][] {
-    const chunks: T[][] = [];
-    for (let i = 0; i < items.length; i += size) {
-        chunks.push(items.slice(i, i + size));
-    }
-    return chunks;
 }
 
 async function fetchWithRetry(ref: string | number): Promise<AppInsert | null> {

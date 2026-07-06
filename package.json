@@ -10,7 +10,8 @@
         "db:generate": "drizzle-kit generate",
         "db:migrate": "drizzle-kit migrate",
         "db:studio": "drizzle-kit studio",
-        "db:seed": "node --env-file=.env --import tsx scripts/seed.ts"
+        "db:seed": "node --env-file=.env --import tsx scripts/seed.ts",
+        "test": "vitest"
     },
     "dependencies": {
         "@reduxjs/toolkit": "^2.12.0",
@@ -25,14 +26,21 @@
     },
     "devDependencies": {
         "@tailwindcss/postcss": "^4.3.2",
+        "@testing-library/jest-dom": "^6.9.1",
+        "@testing-library/react": "^16.3.2",
+        "@testing-library/user-event": "^14.6.1",
         "@types/node": "^24.0.0",
         "@types/react": "^19.2.0",
         "@types/react-dom": "^19.2.0",
+        "@vitejs/plugin-react": "^6.0.3",
         "drizzle-kit": "^0.31.10",
         "eslint": "^9.39.4",
         "eslint-config-next": "16.2.10",
+        "jsdom": "^29.1.1",
         "tailwindcss": "^4.3.2",
         "tsx": "^4.23.0",
-        "typescript": "^6.0.3"
+        "typescript": "^6.0.3",
+        "vite-tsconfig-paths": "^6.1.1",
+        "vitest": "^4.1.10"
     }
 }

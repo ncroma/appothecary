@@ -4,7 +4,7 @@ const API_BASE = "https://ws75.aptoide.com/api/7";
 
 export type AppInsert = typeof apps.$inferInsert;
 
-type AptoideMeta = {
+export type AptoideMeta = {
     info?: { status?: string };
     data?: {
         name?: string;
@@ -48,12 +48,7 @@ export async function fetchTopApps(limit: number): Promise<string[]> {
     return packages.slice(0, limit);
 }
 
-export async function fetchAppMeta(ref: string | number): Promise<AppInsert | null> {
-    const param = typeof ref === "number" ? `app_id=${ref}` : `package_name=${encodeURIComponent(ref)}`;
-    const res = await fetch(`${API_BASE}/app/getMeta?${param}`);
-    if (!res.ok) return null;
-
-    const json = (await res.json()) as AptoideMeta;
+export function mapAppMeta(json: AptoideMeta): AppInsert | null {
     const data = json.data;
 
     if (json.info?.status !== "OK" || !data?.package || !data.name) return null;
@@ -70,4 +65,12 @@ export async function fetchAppMeta(ref: string | number): Promise<AppInsert | nu
         ageRating: data.age?.title ?? null,
         aptoideUrl: data.urls?.w ?? null
     };
+}
+
+export async function fetchAppMeta(ref: string | number): Promise<AppInsert | null> {
+    const param = typeof ref === "number" ? `app_id=${ref}` : `package_name=${encodeURIComponent(ref)}`;
+    const res = await fetch(`${API_BASE}/app/getMeta?${param}`);
+    if (!res.ok) return null;
+
+    return mapAppMeta((await res.json()) as AptoideMeta);
 }
