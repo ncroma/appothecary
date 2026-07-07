@@ -14,6 +14,7 @@ export const apps = pgTable(
         ratingAvg: real("rating_avg"),
         ageRating: text("age_rating"),
         aptoideUrl: text("aptoide_url"),
+        curated: boolean("curated").default(false).notNull(),
 
         // pgvector column for semantic search. 1536 dims is a placeholder until we pick the embedding provider  — dims must match it.
         embedding: vector("embedding", { dimensions: 1536 }),

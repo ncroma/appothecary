@@ -15,6 +15,13 @@
       "when": 1783009273543,
       "tag": "0001_bizarre_kabuki",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1783353673920,
+      "tag": "0002_romantic_exodus",
+      "breakpoints": true
     }
   ]
 }

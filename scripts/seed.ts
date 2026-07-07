@@ -31,11 +31,17 @@ async function main() {
     const rows: AppInsert[] = [];
     const missing: (string | number)[] = [];
 
+    const favoriteRefs = new Set(FAVORITES);
+
     for (const wave of chunk(refs, CONCURRENCY)) {
         const results = await Promise.all(wave.map(fetchWithRetry));
         results.forEach((row, i) => {
-            if (row) rows.push(row);
-            else missing.push(wave[i]);
+            if (!row) {
+                missing.push(wave[i]);
+                return;
+            }
+
+            rows.push(favoriteRefs.has(wave[i]) ? { ...row, curated: true } : row);
         });
         process.stdout.write(`\rfetched ${rows.length + missing.length}/${refs.length}`);
         await sleep(WAVE_DELAY_MS);
@@ -60,6 +66,7 @@ async function main() {
                     ratingAvg: sql`excluded.rating_avg`,
                     ageRating: sql`excluded.age_rating`,
                     aptoideUrl: sql`excluded.aptoide_url`,
+                    curated: sql`excluded.curated`,
                     updatedAt: new Date()
                 }
             });
