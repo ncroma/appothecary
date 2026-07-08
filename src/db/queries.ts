@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { eq, sql } from "drizzle-orm";
 import { db } from "./index";
 import { apps } from "./schema";
@@ -13,10 +14,10 @@ export async function getCuratedApps(limit: number): Promise<App[]> {
         .limit(limit);
 }
 
-export async function getApp(packageName: string): Promise<App | undefined> {
+export const getApp = cache(async (packageName: string): Promise<App | undefined> => {
     const [app] = await db.select().from(apps).where(eq(apps.packageName, packageName)).limit(1);
     return app;
-}
+});
 
 export async function getTopApps(limit: number): Promise<App[]> {
     return db
