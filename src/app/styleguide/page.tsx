@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { AppCard } from "@/components/app-card";
+import type { App } from "@/db/queries";
 
 export const metadata: Metadata = {
     title: "Styleguide — Appothecary"
@@ -12,6 +14,23 @@ const palette = [
     { name: "herb", hex: "#7E9B78", role: "secondary — tags, success", swatch: "bg-herb" },
     { name: "oxblood", hex: "#A85944", role: "errors, destructive actions", swatch: "bg-oxblood" }
 ];
+
+const sampleApp: App = {
+    packageName: "org.thoughtcrime.securesms",
+    name: "Signal - Private Messenger",
+    developer: "Open Whisper Systems",
+    iconUrl: "https://pool.img.aptoide.com/appupdater/7eb548d498e5676975cae53a786da0ff_icon.png",
+    ratingAvg: 4.46,
+    downloads: 100000000,
+    description: null,
+    graphicUrl: null,
+    ageRating: null,
+    aptoideUrl: null,
+    embedding: null,
+    curated: true,
+    ingestedAt: new Date("2026-07-05"),
+    updatedAt: new Date("2026-07-06")
+};
 
 export default function StyleguidePage() {
     return (
@@ -59,7 +78,12 @@ export default function StyleguidePage() {
 
             <section className="flex flex-col gap-4">
                 <h2 className="font-mono text-xs uppercase tracking-[0.2em] text-herb">Components</h2>
-                <p className="max-w-prose text-sm opacity-70">The shelves are bare for now — components appear here as they are built.</p>
+                <div>
+                    <p className="mb-2 font-mono text-xs opacity-60">AppCard · shelf unit, links to the app page</p>
+                    <div className="max-w-sm">
+                        <AppCard app={sampleApp} />
+                    </div>
+                </div>
             </section>
         </main>
     );
