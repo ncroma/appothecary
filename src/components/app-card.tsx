@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { App } from "@/db/queries";
+import { formatDownloads } from "@/lib/format";
 
 export function AppCard({ app }: { app: App }) {
     return (
@@ -15,7 +16,7 @@ export function AppCard({ app }: { app: App }) {
                 <p className="truncate font-medium">{app.name}</p>
                 <p className="truncate text-sm opacity-70">{app.developer}</p>
                 <p className="truncate font-mono text-xs opacity-70">
-                    {app.ratingAvg?.toFixed(1) ?? "—"} ★ · {Intl.NumberFormat("en", { notation: "compact" }).format(app.downloads ?? 0)}
+                    {app.ratingAvg?.toFixed(1) ?? "—"} ★ · {formatDownloads(app.downloads)}
                 </p>
             </div>
         </Link>
