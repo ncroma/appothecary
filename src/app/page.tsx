@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { AppCard } from "@/components/app-card";
 import { getCuratedApps, getTopApps, type App } from "@/db/queries";
+import { Search } from "@/components/search";
 
 async function Shelf({ title, load }: { title: string; load: () => Promise<App[]> }) {
     const apps = await load();
@@ -39,6 +40,8 @@ export default function HomePage() {
                 <h1 className="font-display text-5xl">Appothecary</h1>
                 <p className="text-lg opacity-80">Remedies for your app drawer.</p>
             </header>
+
+            <Search />
 
             <Suspense fallback={<ShelfSkeleton title="Dispensary picks" />}>
                 <Shelf title="Dispensary picks" load={() => getCuratedApps(12)} />
