@@ -27,7 +27,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
     return (
         <html lang="en" className={`${archivo.variable} ${libreCaslon.variable} ${jetbrainsMono.variable}`}>
-            <body className="bg-bottle text-foam antialiased">
+            <body className="bg-dispensary text-foam antialiased">
                 <Providers>{children}</Providers>
             </body>
         </html>

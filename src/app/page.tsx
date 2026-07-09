@@ -26,7 +26,7 @@ function ShelfSkeleton({ title }: { title: string }) {
             <h2 className="font-mono text-xs uppercase tracking-[0.2em] text-herb">{title} · steeping…</h2>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
                 {Array.from({ length: 12 }, (_, i) => (
-                    <div key={i} className="h-21 animate-pulse rounded-sm bg-vial" />
+                    <div key={i} className="h-21 animate-pulse rounded-sm bg-foam/8" />
                 ))}
             </div>
         </section>

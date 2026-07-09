@@ -33,7 +33,7 @@ export function Search() {
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder="Search the shelves…"
-                className="w-full rounded-sm bg-vial px-4 py-3 placeholder:opacity-50 outline-none focus-visible:ring-1 focus-visible:ring-elixir/60"
+                className="w-full rounded-sm surface-vial px-4 py-3 placeholder:opacity-50 outline-none focus-visible:ring-1 focus-visible:ring-elixir/60"
             />
 
             {enabled && (

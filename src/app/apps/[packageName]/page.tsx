@@ -50,15 +50,15 @@ export default async function AppDetailPage({ params }: Props) {
             </header>
 
             <section className="grid grid-cols-3 gap-3">
-                <div className="flex flex-col gap-1 rounded-sm bg-vial p-4">
+                <div className="flex flex-col gap-1 rounded-sm surface-vial p-4">
                     <span className="font-mono text-xs uppercase tracking-[0.15em] text-herb">Rating</span>
                     <span className="font-mono text-lg">{app.ratingAvg?.toFixed(1) ?? "—"} ★</span>
                 </div>
-                <div className="flex flex-col gap-1 rounded-sm bg-vial p-4">
+                <div className="flex flex-col gap-1 rounded-sm surface-vial p-4">
                     <span className="font-mono text-xs uppercase tracking-[0.15em] text-herb">Downloads</span>
                     <span className="font-mono text-lg">{formatDownloads(app.downloads)}</span>
                 </div>
-                <div className="flex flex-col gap-1 rounded-sm bg-vial p-4">
+                <div className="flex flex-col gap-1 rounded-sm surface-vial p-4">
                     <span className="font-mono text-xs uppercase tracking-[0.15em] text-herb">Age</span>
                     <span className="font-mono text-lg">{app.ageRating ?? "—"}</span>
                 </div>

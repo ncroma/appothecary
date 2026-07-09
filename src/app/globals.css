@@ -12,4 +12,28 @@
     --font-sans: var(--font-archivo);
     --font-display: var(--font-caslon);
     --font-mono: var(--font-jetbrains);
+
+    --animate-slosh: slosh 5s linear infinite;
+    @keyframes slosh {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+}
+
+@utility bg-dispensary {
+    background:
+        radial-gradient(120% 90% at 50% -20%, color-mix(in oklab, var(--color-elixir) 9%, transparent), transparent 55%), radial-gradient(140% 100% at 50% 120%, rgb(0 0 0 / 55%), transparent 60%),
+        var(--color-bottle);
+}
+
+@utility surface-vial {
+    background: linear-gradient(180deg, color-mix(in oklab, var(--color-vial) 90%, var(--color-foam) 10%), color-mix(in oklab, var(--color-vial) 85%, var(--color-bottle) 15%));
+    /* hairline edge as an INSET SHADOW, never a border: borders occupy
+       layout (border-box) and changed card height vs skeletons — the
+       2px jump bug of 2026-07-09. Shadows cost zero layout. */
+    box-shadow:
+        inset 0 0 0 1px color-mix(in oklab, var(--color-foam) 8%, transparent),
+        inset 0 1px 0 color-mix(in oklab, var(--color-foam) 5%, transparent),
+        0 10px 24px rgb(0 0 0 / 35%);
 }

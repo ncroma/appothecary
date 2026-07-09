@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { AppCard } from "@/components/app-card";
+import { VialLoader } from "@/components/vial-loader";
 import type { App } from "@/db/queries";
 
 export const metadata: Metadata = {
@@ -45,7 +46,7 @@ export default function StyleguidePage() {
                 <h2 className="font-mono text-xs uppercase tracking-[0.2em] text-herb">The shelf · color tokens</h2>
                 <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3">
                     {palette.map((token) => (
-                        <li key={token.name} className="flex flex-col gap-2 rounded-sm bg-vial p-3">
+                        <li key={token.name} className="flex flex-col gap-2 rounded-sm surface-vial p-3">
                             <div className={`h-16 rounded-sm ${token.swatch}`} />
                             <div className="flex items-baseline justify-between gap-2">
                                 <span className="font-medium">{token.name}</span>
@@ -83,6 +84,10 @@ export default function StyleguidePage() {
                     <div className="max-w-sm">
                         <AppCard app={sampleApp} />
                     </div>
+                </div>
+                <div>
+                    <p className="mb-2 font-mono text-xs opacity-60">VialLoader · full-page waits only — skeletons keep their pulse</p>
+                    <VialLoader />
                 </div>
             </section>
         </main>
