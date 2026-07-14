@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Archivo, JetBrains_Mono, Libre_Caslon_Text } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
+import { SiteHeader } from "@/components/site-header";
 
 const archivo = Archivo({
     subsets: ["latin"],
@@ -28,7 +29,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     return (
         <html lang="en" className={`${archivo.variable} ${libreCaslon.variable} ${jetbrainsMono.variable}`}>
             <body className="bg-dispensary text-foam antialiased">
-                <Providers>{children}</Providers>
+                <Providers>
+                    <SiteHeader />
+                    {children}
+                </Providers>
             </body>
         </html>
     );
