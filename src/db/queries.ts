@@ -1,7 +1,7 @@
 import { cache } from "react";
 import { eq, ilike, sql, or } from "drizzle-orm";
 import { db } from "./index";
-import { apps } from "./schema";
+import { apps, reviews, user } from "./schema";
 
 export type App = typeof apps.$inferSelect;
 
@@ -27,6 +27,25 @@ export async function searchApps(q: string, limit: number): Promise<App[]> {
         .orderBy(sql`${apps.downloads} DESC NULLS LAST`)
         .limit(limit);
 }
+
+export async function getReviewsForApp(packageName: string) {
+    return db
+        .select({
+            id: reviews.id,
+            rating: reviews.rating,
+            body: reviews.body,
+            createdAt: reviews.createdAt,
+            userId: reviews.userId,
+            authorName: user.name,
+            authorImage: user.image
+        })
+        .from(reviews)
+        .innerJoin(user, eq(reviews.userId, user.id))
+        .where(eq(reviews.packageName, packageName))
+        .orderBy(sql`${reviews.createdAt} DESC`);
+}
+
+export type ReviewWithAuthor = Awaited<ReturnType<typeof getReviewsForApp>>[number];
 
 export async function getTopApps(limit: number): Promise<App[]> {
     return db
