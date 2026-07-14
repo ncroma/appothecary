@@ -1,5 +1,5 @@
-import { pgTable, text, integer, real, timestamp, vector, index, boolean } from "drizzle-orm/pg-core";
-import { relations } from "drizzle-orm";
+import { pgTable, text, integer, real, timestamp, vector, index, uniqueIndex, check, boolean } from "drizzle-orm/pg-core";
+import { relations, sql } from "drizzle-orm";
 
 export const apps = pgTable(
     "apps",
@@ -99,6 +99,40 @@ export const verification = pgTable(
     },
     (table) => [index("verification_identifier_idx").on(table.identifier)]
 );
+
+export const reviews = pgTable(
+    "reviews",
+    {
+        id: text("id")
+            .primaryKey()
+            .$defaultFn(() => crypto.randomUUID()),
+        userId: text("user_id")
+            .notNull()
+            .references(() => user.id, { onDelete: "cascade" }),
+        packageName: text("package_name")
+            .notNull()
+            .references(() => apps.packageName, { onDelete: "cascade" }),
+        rating: integer("rating").notNull(),
+        body: text("body"),
+        createdAt: timestamp("created_at").defaultNow().notNull(),
+        updatedAt: timestamp("updated_at")
+            .defaultNow()
+            .$onUpdate(() => new Date())
+            .notNull()
+    },
+    (table) => [uniqueIndex("reviews_user_app_idx").on(table.userId, table.packageName), check("reviews_rating_range", sql`${table.rating} BETWEEN 1 AND 5`)]
+);
+
+export const reviewsRelations = relations(reviews, ({ one }) => ({
+    user: one(user, {
+        fields: [reviews.userId],
+        references: [user.id]
+    }),
+    app: one(apps, {
+        fields: [reviews.packageName],
+        references: [apps.packageName]
+    })
+}));
 
 export const userRelations = relations(user, ({ many }) => ({
     sessions: many(session),
