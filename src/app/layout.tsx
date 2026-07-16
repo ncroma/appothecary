@@ -3,6 +3,7 @@ import { Archivo, JetBrains_Mono, Libre_Caslon_Text } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import { SiteHeader } from "@/components/site-header";
+import { Toaster } from "@/components/toaster";
 
 const archivo = Archivo({
     subsets: ["latin"],
@@ -32,6 +33,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                 <Providers>
                     <SiteHeader />
                     {children}
+                    <Toaster />
                 </Providers>
             </body>
         </html>

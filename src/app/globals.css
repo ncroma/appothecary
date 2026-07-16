@@ -19,6 +19,56 @@
             transform: rotate(360deg);
         }
     }
+
+    --animate-pour: pour 500ms ease-out;
+    @keyframes pour {
+        from {
+            transform: translateY(110%);
+        }
+    }
+
+    --animate-settle: settle 3s ease-out, sway 5s ease-in-out 3s infinite;
+    @keyframes settle {
+        0% {
+            transform: rotate(30deg);
+        }
+        10% {
+            transform: rotate(-22deg);
+        }
+        20% {
+            transform: rotate(16deg);
+        }
+        31% {
+            transform: rotate(-11deg);
+        }
+        43% {
+            transform: rotate(7.5deg);
+        }
+        56% {
+            transform: rotate(-4.5deg);
+        }
+        70% {
+            transform: rotate(2.5deg);
+        }
+        85% {
+            transform: rotate(-1deg);
+        }
+        100% {
+            transform: rotate(0deg);
+        }
+    }
+    @keyframes sway {
+        0%,
+        100% {
+            transform: rotate(0deg);
+        }
+        30% {
+            transform: rotate(2deg);
+        }
+        70% {
+            transform: rotate(-2deg);
+        }
+    }
 }
 
 @utility bg-dispensary {
@@ -29,9 +79,8 @@
 
 @utility surface-vial {
     background: linear-gradient(180deg, color-mix(in oklab, var(--color-vial) 90%, var(--color-foam) 10%), color-mix(in oklab, var(--color-vial) 85%, var(--color-bottle) 15%));
-    /* hairline edge as an INSET SHADOW, never a border: borders occupy
-       layout (border-box) and changed card height vs skeletons — the
-       2px jump bug of 2026-07-09. Shadows cost zero layout. */
+    /* hairline as inset shadow, not border — borders change box height
+       and desync cards from their skeletons */
     box-shadow:
         inset 0 0 0 1px color-mix(in oklab, var(--color-foam) 8%, transparent),
         inset 0 1px 0 color-mix(in oklab, var(--color-foam) 5%, transparent),

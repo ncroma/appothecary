@@ -17,7 +17,6 @@ export async function submitReview(packageName: string, _previous: ReviewActionS
     const parsed = validateReview(formData.get("rating"), formData.get("body"));
     if (!parsed.ok) return { status: "error", message: parsed.error };
 
-    // conflict on the (user, app) unique index: re-reviewing updates in place
     await db
         .insert(reviews)
         .values({

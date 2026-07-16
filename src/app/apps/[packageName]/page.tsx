@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getApp } from "@/db/queries";
+import { getApp, getReviewsForApp } from "@/db/queries";
 import { formatDownloads } from "@/lib/format";
+import { ReviewsSection } from "@/components/reviews-section";
+import { ExpandableText } from "@/components/expandable-text";
 
 export const revalidate = 86400;
 
@@ -25,6 +27,8 @@ export default async function AppDetailPage({ params }: Props) {
     const app = await getApp(packageName);
     if (!app) notFound();
 
+    const appReviews = await getReviewsForApp(packageName);
+
     return (
         <main className="mx-auto flex min-h-screen max-w-3xl flex-col gap-8 px-8 py-12">
             <Link href="/" className="text-sm text-herb hover:underline">
@@ -33,7 +37,7 @@ export default async function AppDetailPage({ params }: Props) {
 
             {app.graphicUrl && (
                 <div className="relative aspect-2/1 overflow-hidden rounded-sm bg-vial sm:aspect-3/1">
-                    <Image src={app.graphicUrl} alt="" fill sizes="(max-width: 768px) 100vw, 768px" className="object-cover" />
+                    <Image src={app.graphicUrl} loading="eager" alt="" fill sizes="(max-width: 768px) 100vw, 768px" className="object-cover" />
                 </div>
             )}
 
@@ -78,9 +82,15 @@ export default async function AppDetailPage({ params }: Props) {
             {app.description && (
                 <section className="flex flex-col gap-3">
                     <h2 className="font-mono text-xs uppercase tracking-[0.2em] text-herb">The label says</h2>
-                    <p className="max-w-prose whitespace-pre-line text-sm leading-relaxed opacity-85">{app.description}</p>
+                    {app.description.length > 400 ? (
+                        <ExpandableText text={app.description} className="max-w-prose whitespace-pre-line text-sm leading-relaxed opacity-85" />
+                    ) : (
+                        <p className="max-w-prose whitespace-pre-line text-sm leading-relaxed opacity-85">{app.description}</p>
+                    )}
                 </section>
             )}
+
+            <ReviewsSection packageName={packageName} reviews={appReviews} />
         </main>
     );
 }
