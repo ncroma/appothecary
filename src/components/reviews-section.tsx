@@ -92,13 +92,25 @@ export function ReviewsSection({ packageName, reviews }: { packageName: string; 
                                 >
                                     <input type="radio" name="rating" value={n} required checked={rating === n} onChange={() => setPickedRating(n)} aria-label={`${n} of 5`} className="sr-only" />
                                     {rating === n ? (
-                                        <span aria-hidden className={`absolute inset-0 animate-pour motion-reduce:animate-none ${RATING_STYLES[n].level}`}>
-                                            <span className={`absolute -top-0.75 -left-4 size-14 animate-settle rounded-[46%] motion-reduce:animate-none ${RATING_STYLES[n].liquid}`} />
+                                        <>
+                                            <span aria-hidden className={`absolute inset-0 animate-pour motion-reduce:animate-none ${RATING_STYLES[n].level}`}>
+                                                <span className={`absolute -top-0.75 -left-4 size-14 animate-settle rounded-[46%] motion-reduce:animate-none ${RATING_STYLES[n].liquid}`} />
+                                            </span>
+                                            {/* anchored to the glass, not the pour layer: rise = floor → waterline */}
                                             <span
+                                                aria-hidden
                                                 className="absolute bottom-1 left-[35%] size-0.75 animate-bubble rounded-full bg-foam/90 motion-reduce:animate-none"
-                                                style={{ "--bubble-rise": RATING_STYLES[n].rise, transformOrigin: "center", animationFillMode: "backwards" } as React.CSSProperties}
+                                                style={
+                                                    {
+                                                        "--bubble-rise": RATING_STYLES[n].rise,
+                                                        transformOrigin: "center",
+                                                        animationDelay: "0.5s",
+                                                        animationFillMode: "backwards"
+                                                    } as React.CSSProperties
+                                                }
                                             />
                                             <span
+                                                aria-hidden
                                                 className="absolute bottom-0.5 left-[60%] size-0.5 animate-bubble rounded-full bg-foam/90 motion-reduce:animate-none"
                                                 style={
                                                     {
@@ -110,7 +122,7 @@ export function ReviewsSection({ packageName, reviews }: { packageName: string; 
                                                     } as React.CSSProperties
                                                 }
                                             />
-                                        </span>
+                                        </>
                                     ) : (
                                         <span aria-hidden className={`absolute inset-0 ${RATING_STYLES[n].level}`}>
                                             <span className="absolute -top-0.75 -left-4 size-14 rounded-[46%] bg-foam/15" />
