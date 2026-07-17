@@ -35,7 +35,7 @@ function RatingStars({ rating }: { rating: number }) {
 }
 
 export function ReviewsSection({ packageName, reviews }: { packageName: string; reviews: ReviewWithAuthor[] }) {
-    const { data: session } = authClient.useSession();
+    const { data: session, isPending: isSessionPending } = authClient.useSession();
     const dispatch = useAppDispatch();
     const formRef = useRef<HTMLFormElement>(null);
     const [isDeleting, startDelete] = useTransition();
@@ -78,7 +78,9 @@ export function ReviewsSection({ packageName, reviews }: { packageName: string; 
         <section className="flex flex-col gap-5">
             <h2 className="font-mono text-xs uppercase tracking-[0.2em] text-herb">Visitor notes · {optimisticReviews.length}</h2>
 
-            {session ? (
+            {isSessionPending ? (
+                <div aria-hidden className="h-48 animate-pulse rounded-sm bg-foam/8" />
+            ) : session ? (
                 <form ref={formRef} action={formAction} className="flex flex-col gap-3 rounded-sm surface-vial p-4">
                     <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
                         <fieldset className="flex items-center gap-2">
@@ -96,7 +98,6 @@ export function ReviewsSection({ packageName, reviews }: { packageName: string; 
                                             <span aria-hidden className={`absolute inset-0 animate-pour motion-reduce:animate-none ${RATING_STYLES[n].level}`}>
                                                 <span className={`absolute -top-0.75 -left-4 size-14 animate-settle rounded-[46%] motion-reduce:animate-none ${RATING_STYLES[n].liquid}`} />
                                             </span>
-                                            {/* anchored to the glass, not the pour layer: rise = floor → waterline */}
                                             <span
                                                 aria-hidden
                                                 className="absolute bottom-1 left-[35%] size-0.75 animate-bubble rounded-full bg-foam/90 motion-reduce:animate-none"
