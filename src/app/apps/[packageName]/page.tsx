@@ -6,6 +6,7 @@ import { getApp, getReviewsForApp } from "@/db/queries";
 import { formatDownloads } from "@/lib/format";
 import { ReviewsSection } from "@/components/reviews-section";
 import { ExpandableText } from "@/components/expandable-text";
+import { ScrollToTop } from "@/components/scroll-to-top";
 
 export const revalidate = 86400;
 
@@ -31,6 +32,7 @@ export default async function AppDetailPage({ params }: Props) {
 
     return (
         <main className="mx-auto flex min-h-screen max-w-3xl flex-col gap-8 px-8 py-12">
+            <ScrollToTop />
             <Link href="/" className="text-sm text-herb hover:underline">
                 ← Back to the shelves
             </Link>
