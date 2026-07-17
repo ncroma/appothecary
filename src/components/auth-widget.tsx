@@ -2,12 +2,15 @@
 
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
+import { useTransition } from "react";
 import { authClient } from "@/lib/auth-client";
 
 export function AuthWidget() {
     const { data: session, isPending } = authClient.useSession();
     const pathname = usePathname();
     const router = useRouter();
+    const [isSigningIn, startSignIn] = useTransition();
+    const [isSigningOut, startSignOut] = useTransition();
 
     if (isPending) return <div aria-hidden className="h-8 w-24 animate-pulse rounded-sm bg-foam/8" />;
 
@@ -15,10 +18,15 @@ export function AuthWidget() {
         return (
             <button
                 type="button"
-                onClick={() => authClient.signIn.social({ provider: "github", callbackURL: pathname })}
-                className="cursor-pointer rounded-sm bg-elixir px-4 py-1.5 text-sm font-semibold text-bottle transition-opacity hover:opacity-90"
+                disabled={isSigningIn}
+                onClick={() =>
+                    startSignIn(async () => {
+                        await authClient.signIn.social({ provider: "github", callbackURL: pathname });
+                    })
+                }
+                className="cursor-pointer rounded-sm bg-elixir px-4 py-1.5 text-sm font-semibold text-bottle transition-opacity hover:opacity-90 disabled:opacity-60"
             >
-                Sign in with GitHub
+                {isSigningIn ? "Opening GitHub…" : "Sign in with GitHub"}
             </button>
         );
     }
@@ -33,8 +41,18 @@ export function AuthWidget() {
                 </div>
             )}
             <span className="hidden text-sm opacity-80 sm:inline">{session.user.name}</span>
-            <button type="button" onClick={() => authClient.signOut().then(() => router.refresh())} className="cursor-pointer text-sm text-herb hover:underline">
-                Sign out
+            <button
+                type="button"
+                disabled={isSigningOut}
+                onClick={() =>
+                    startSignOut(async () => {
+                        await authClient.signOut();
+                        router.refresh();
+                    })
+                }
+                className="cursor-pointer text-sm text-herb hover:underline disabled:opacity-50"
+            >
+                {isSigningOut ? "Signing out…" : "Sign out"}
             </button>
         </div>
     );
