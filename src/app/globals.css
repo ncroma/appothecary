@@ -29,6 +29,12 @@
 
     --animate-settle: settle 3s ease-out, sway 5s ease-in-out 3s infinite;
     --animate-settle-still: settle 3.4s ease-out;
+    --animate-grind: grind 1.5s ease-in-out infinite;
+    @keyframes grind {
+        50% {
+            transform: rotate(-28deg);
+        }
+    }
     --animate-bubble: bubble 2.6s ease-in infinite;
     @keyframes bubble {
         0% {
