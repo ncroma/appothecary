@@ -47,6 +47,16 @@ export async function getReviewsForApp(packageName: string) {
 
 export type ReviewWithAuthor = Awaited<ReturnType<typeof getReviewsForApp>>[number];
 
+export async function searchAppsSemantic(embedding: number[], limit: number): Promise<App[]> {
+    const vector = JSON.stringify(embedding);
+    return db
+        .select()
+        .from(apps)
+        .where(sql`${apps.embedding} IS NOT NULL AND 1 - (${apps.embedding} <=> ${vector}::vector) > 0.25`)
+        .orderBy(sql`${apps.embedding} <=> ${vector}::vector`)
+        .limit(limit);
+}
+
 export async function getTopApps(limit: number): Promise<App[]> {
     return db
         .select()
