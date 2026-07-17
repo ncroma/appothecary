@@ -83,8 +83,8 @@ export default function StyleguidePage() {
                 <div>
                     <p className="mb-2 font-mono text-xs opacity-60">AppLogo · vial-belly android — favicon, header lockup, hero (animated)</p>
                     <div className="flex items-end gap-6">
-                        <AppLogo animated className="h-24 w-17.5" />
-                        <AppLogo className="h-7 w-5" />
+                        <AppLogo animated className="aspect-3/5 h-24 w-auto" />
+                        <AppLogo className="aspect-3/5 h-6 w-auto" />
                     </div>
                 </div>
                 <div>
