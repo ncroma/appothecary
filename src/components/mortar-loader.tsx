@@ -1,5 +1,3 @@
-// Grinding-mortar loader for page-level waits: the pestle rocks around its
-// planted tip inside the bowl.
 export function MortarLoader({ label = "Grinding the remedy…" }: { label?: string }) {
     return (
         <div role="status" className="flex flex-col items-center gap-3 text-foam">
