@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { AppCard } from "@/components/app-card";
 import { VialLoader } from "@/components/vial-loader";
+import { AppLogo } from "@/components/logo";
 import type { App } from "@/db/queries";
 
 export const metadata: Metadata = {
@@ -79,6 +80,13 @@ export default function StyleguidePage() {
 
             <section className="flex flex-col gap-4">
                 <h2 className="font-mono text-xs uppercase tracking-[0.2em] text-herb">Components</h2>
+                <div>
+                    <p className="mb-2 font-mono text-xs opacity-60">AppLogo · vial-belly android — favicon, header lockup, hero (animated)</p>
+                    <div className="flex items-end gap-6">
+                        <AppLogo animated className="h-24 w-17.5" />
+                        <AppLogo className="h-7 w-5" />
+                    </div>
+                </div>
                 <div>
                     <p className="mb-2 font-mono text-xs opacity-60">AppCard · shelf unit, links to the app page</p>
                     <div className="max-w-sm">
