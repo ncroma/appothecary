@@ -14,12 +14,12 @@ type OptimisticReview = ReviewWithAuthor & { pending?: boolean };
 const RATINGS = [1, 2, 3, 4, 5] as const;
 type Rating = (typeof RATINGS)[number];
 
-const RATING_STYLES: Record<Rating, { level: string; liquid: string; note: string }> = {
-    1: { level: "translate-y-[90%]", liquid: "bg-linear-to-b from-oxblood/90 to-oxblood/60", note: "One drop — left a bitter taste." },
-    2: { level: "translate-y-[70%]", liquid: "bg-linear-to-b from-oxblood/80 to-elixir/50", note: "Two drops — weak brew." },
-    3: { level: "translate-y-[55%]", liquid: "bg-linear-to-b from-elixir/90 to-oxblood/70", note: "Three drops — a decent tonic." },
-    4: { level: "translate-y-[40%]", liquid: "bg-linear-to-b from-elixir/90 to-elixir/60", note: "Four drops — potent stuff." },
-    5: { level: "translate-y-[25%]", liquid: "bg-linear-to-b from-elixir to-elixir/80", note: "Five drops — pure elixir." }
+const RATING_STYLES: Record<Rating, { level: string; liquid: string; rise: string; note: string }> = {
+    1: { level: "translate-y-[90%]", liquid: "bg-linear-to-b from-oxblood/90 to-oxblood/60", rise: "-2px", note: "One drop — left a bitter taste." },
+    2: { level: "translate-y-[70%]", liquid: "bg-linear-to-b from-oxblood/80 to-elixir/50", rise: "-8px", note: "Two drops — weak brew." },
+    3: { level: "translate-y-[55%]", liquid: "bg-linear-to-b from-elixir/90 to-oxblood/70", rise: "-13px", note: "Three drops — a decent tonic." },
+    4: { level: "translate-y-[40%]", liquid: "bg-linear-to-b from-elixir/90 to-elixir/60", rise: "-18px", note: "Four drops — potent stuff." },
+    5: { level: "translate-y-[25%]", liquid: "bg-linear-to-b from-elixir to-elixir/80", rise: "-23px", note: "Five drops — pure elixir." }
 };
 
 function RatingStars({ rating }: { rating: number }) {
@@ -94,6 +94,14 @@ export function ReviewsSection({ packageName, reviews }: { packageName: string; 
                                     {rating === n ? (
                                         <span aria-hidden className={`absolute inset-0 animate-pour motion-reduce:animate-none ${RATING_STYLES[n].level}`}>
                                             <span className={`absolute -top-0.75 -left-4 size-14 animate-settle rounded-[46%] motion-reduce:animate-none ${RATING_STYLES[n].liquid}`} />
+                                            <span
+                                                className="absolute bottom-1 left-[35%] size-0.75 animate-bubble rounded-full bg-foam/90 motion-reduce:animate-none"
+                                                style={{ "--bubble-rise": RATING_STYLES[n].rise, transformOrigin: "center" } as React.CSSProperties}
+                                            />
+                                            <span
+                                                className="absolute bottom-0.5 left-[60%] size-0.5 animate-bubble rounded-full bg-foam/90 motion-reduce:animate-none"
+                                                style={{ "--bubble-rise": RATING_STYLES[n].rise, transformOrigin: "center", animationDelay: "1.6s", animationDuration: "3.4s" } as React.CSSProperties}
+                                            />
                                         </span>
                                     ) : (
                                         <span aria-hidden className={`absolute inset-0 ${RATING_STYLES[n].level}`}>
