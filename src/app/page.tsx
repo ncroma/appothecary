@@ -1,4 +1,6 @@
 import { Suspense } from "react";
+
+export const revalidate = 3600;
 import { AppCard } from "@/components/app-card";
 import { getCuratedApps, getTopApps, type App } from "@/db/queries";
 import { Search } from "@/components/search";
