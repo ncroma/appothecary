@@ -1,5 +1,7 @@
 # <img src="src/app/icon.svg" width="28" alt="" /> Appothecary
 
+[![ci](https://github.com/ncroma/appothecary/actions/workflows/ci.yml/badge.svg)](https://github.com/ncroma/appothecary/actions/workflows/ci.yml)
+
 > Apps for what ails you — discover, review, and curate Android apps.
 
 **Letterboxd for apps.** Browse a stocked catalog of Android apps, describe
