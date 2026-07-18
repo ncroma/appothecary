@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Archivo, JetBrains_Mono, Libre_Caslon_Text } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
@@ -23,7 +23,11 @@ const libreCaslon = Libre_Caslon_Text({
 
 export const metadata: Metadata = {
     title: "Appothecary",
-    description: "Remedies for your app drawer — discover, review, and curate apps."
+    description: "Apps for what ails you — discover, review, and curate Android apps."
+};
+
+export const viewport: Viewport = {
+    themeColor: "#111815"
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

@@ -90,7 +90,7 @@ export function ReviewsSection({ packageName, reviews }: { packageName: string; 
                             {RATINGS.map((n) => (
                                 <label
                                     key={n}
-                                    className={`relative h-9 w-6 cursor-pointer overflow-hidden rounded-t-md rounded-b-[10px] border transition-colors has-focus-visible:ring-1 has-focus-visible:ring-elixir/60 ${
+                                    className={`relative h-9 w-7 cursor-pointer overflow-hidden rounded-t-md rounded-b-[10px] border transition-colors has-focus-visible:ring-1 has-focus-visible:ring-elixir/60 sm:w-6 ${
                                         rating === n ? "border-foam/30 bg-bottle/70" : "border-foam/15 bg-foam/5 hover:bg-foam/15"
                                     }`}
                                 >

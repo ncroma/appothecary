@@ -74,7 +74,7 @@ export function Search() {
                         type="button"
                         aria-pressed={mode === key}
                         onClick={() => setMode(key)}
-                        className={`cursor-pointer rounded-sm px-3 py-1 font-mono text-xs uppercase tracking-[0.15em] transition-colors ${
+                        className={`cursor-pointer rounded-sm px-3 py-2 font-mono text-xs uppercase tracking-[0.15em] transition-colors outline-none focus-visible:ring-1 focus-visible:ring-elixir/60 sm:py-1 ${
                             mode === key ? "bg-elixir text-bottle" : "bg-foam/10 text-foam/70 hover:bg-foam/20"
                         }`}
                     >
@@ -96,7 +96,7 @@ export function Search() {
                         type="button"
                         aria-label="Clear search"
                         onClick={() => handleQueryInputChange("")}
-                        className="absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer text-sm text-foam/60 transition-colors hover:text-foam"
+                        className="absolute top-1/2 right-1 -translate-y-1/2 cursor-pointer p-2 text-sm text-foam/60 transition-colors hover:text-foam"
                     >
                         ✕
                     </button>
