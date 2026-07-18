@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { AppCard } from "@/components/app-card";
-import { VialLoader } from "@/components/vial-loader";
 import { AppLogo } from "@/components/logo";
 import { MortarLoader } from "@/components/mortar-loader";
 import type { App } from "@/db/queries";
@@ -95,11 +94,7 @@ export default function StyleguidePage() {
                     </div>
                 </div>
                 <div>
-                    <p className="mb-2 font-mono text-xs opacity-60">VialLoader · reserved for the future semantic-search steeping state</p>
-                    <VialLoader />
-                </div>
-                <div>
-                    <p className="mb-2 font-mono text-xs opacity-60">MortarLoader · page-level waits (app detail)</p>
+                    <p className="mb-2 font-mono text-xs opacity-60">MortarLoader · the loading state</p>
                     <MortarLoader />
                 </div>
             </section>

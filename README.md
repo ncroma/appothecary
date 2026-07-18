@@ -2,7 +2,7 @@
 
 > Remedies for your app drawer — discover, review, and curate Android apps.
 
-**Letterboxd for apps.** Describe your ailment ("I need something for tracking
+**Letterboxd for apps.** Describe your needs ("I need something for tracking
 hikes offline"), get prescriptions via semantic search, and curate shareable
 remedies (collections).
 

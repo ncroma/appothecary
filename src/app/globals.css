@@ -13,13 +13,6 @@
     --font-display: var(--font-caslon);
     --font-mono: var(--font-jetbrains);
 
-    --animate-slosh: slosh 5s linear infinite;
-    @keyframes slosh {
-        to {
-            transform: rotate(360deg);
-        }
-    }
-
     --animate-pour: pour 500ms ease-out;
     @keyframes pour {
         from {
@@ -108,8 +101,6 @@
 
 @utility surface-vial {
     background: linear-gradient(180deg, color-mix(in oklab, var(--color-vial) 90%, var(--color-foam) 10%), color-mix(in oklab, var(--color-vial) 85%, var(--color-bottle) 15%));
-    /* hairline as inset shadow, not border — borders change box height
-       and desync cards from their skeletons */
     box-shadow:
         inset 0 0 0 1px color-mix(in oklab, var(--color-foam) 8%, transparent),
         inset 0 1px 0 color-mix(in oklab, var(--color-foam) 5%, transparent),

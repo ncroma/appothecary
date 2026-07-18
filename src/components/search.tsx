@@ -1,39 +1,38 @@
 "use client";
 
 import { useState } from "react";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { AppCard } from "@/components/app-card";
-import { VialLoader } from "@/components/vial-loader";
 import type { App } from "@/db/queries";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
 
 const MODES = {
+    needs: {
+        label: "By needs",
+        placeholder: "Describe what you need…",
+        minLength: 5,
+        debounce: 600,
+        endpoint: "/api/search/semantic",
+        empty: "No remedy matches those needs."
+    },
     name: {
-        label: "By name",
+        label: "By label",
         placeholder: "Search the shelves…",
         minLength: 2,
         debounce: 300,
         endpoint: "/api/search",
-        empty: "Nothing on the shelves by that name. Check the spelling — or try the maker's name; the labels list those too."
-    },
-    ailment: {
-        label: "By ailment",
-        placeholder: "Describe your ailment…",
-        minLength: 5,
-        debounce: 600,
-        endpoint: "/api/search/semantic",
-        empty: "No remedy matches that ailment — try describing what troubles you differently."
+        empty: "Nothing on the shelves by that name."
     }
 } as const;
 
 type SearchMode = keyof typeof MODES;
 
 export function Search() {
-    const [mode, setMode] = useState<SearchMode>("name");
+    const [mode, setMode] = useState<SearchMode>("needs");
     const [query, setQuery] = useState("");
     const config = MODES[mode];
     const debouncedQuery = useDebouncedValue(query.trim(), config.debounce);
-    const enabled = debouncedQuery.length >= config.minLength;
+    const enabled = debouncedQuery.length >= config.minLength && query.trim().length >= config.minLength;
 
     const {
         data: results,
@@ -47,13 +46,13 @@ export function Search() {
             return res.json();
         },
         enabled,
-        placeholderData: keepPreviousData
+        staleTime: 60_000
     });
 
-    const steeping = mode === "ailment" && isFetching && !results;
+    const stale = isFetching || query.trim() !== debouncedQuery;
 
     return (
-        <section className="flex flex-col gap-3">
+        <section className="flex flex-col gap-3 min-h-66">
             <div className="flex gap-2">
                 {(Object.keys(MODES) as SearchMode[]).map((key) => (
                     <button
@@ -70,41 +69,43 @@ export function Search() {
                 ))}
             </div>
 
-            <input
-                type="search"
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                placeholder={config.placeholder}
-                className="w-full rounded-sm surface-vial px-4 py-3 placeholder:opacity-50 outline-none focus-visible:ring-1 focus-visible:ring-elixir/60"
-            />
+            <div className="relative">
+                <input
+                    type="search"
+                    value={query}
+                    onChange={(event) => setQuery(event.target.value)}
+                    placeholder={config.placeholder}
+                    className="w-full rounded-sm surface-vial px-4 py-3 pr-10 placeholder:opacity-50 outline-none focus-visible:ring-1 focus-visible:ring-elixir/60 [&::-webkit-search-cancel-button]:hidden"
+                />
+                {query.length > 0 && (
+                    <button
+                        type="button"
+                        aria-label="Clear search"
+                        onClick={() => setQuery("")}
+                        className="absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer text-sm text-foam/60 transition-colors hover:text-foam"
+                    >
+                        ✕
+                    </button>
+                )}
+            </div>
 
             {enabled && (
                 <div aria-live="polite" className="flex flex-col gap-3">
-                    {steeping ? (
-                        <div className="py-4">
-                            <VialLoader />
-                        </div>
-                    ) : (
-                        <>
-                            <p className="font-mono text-xs uppercase tracking-[0.2em] text-herb">
-                                {isFetching ? "Steeping…" : `Results · ${results?.length ?? 0}`}
-                            </p>
+                    <p className="font-mono text-xs uppercase tracking-[0.2em] text-herb">{stale ? "Steeping…" : `Results · ${results?.length ?? 0}`}</p>
 
-                            {results && results.length > 0 && (
-                                <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                                    {results.map((app) => (
-                                        <li key={app.packageName}>
-                                            <AppCard app={app} />
-                                        </li>
-                                    ))}
-                                </ul>
-                            )}
-
-                            {results?.length === 0 && !isFetching && <p className="max-w-prose text-sm opacity-70">{config.empty}</p>}
-
-                            {isError && <p className="text-sm text-oxblood">The cauldron hiccuped — try that search again.</p>}
-                        </>
+                    {results && results.length > 0 && (
+                        <ul className={`grid grid-cols-1 gap-3 transition-opacity duration-200 sm:grid-cols-2 lg:grid-cols-3 ${stale ? "opacity-40" : ""}`}>
+                            {results.map((app) => (
+                                <li key={app.packageName}>
+                                    <AppCard app={app} />
+                                </li>
+                            ))}
+                        </ul>
                     )}
+
+                    {results?.length === 0 && !stale && <p className="max-w-prose text-sm opacity-70">{config.empty}</p>}
+
+                    {isError && <p className="text-sm text-oxblood">The cauldron hiccuped — try that search again.</p>}
                 </div>
             )}
         </section>
