@@ -39,9 +39,9 @@ function ShelfSkeleton({ title }: { title: string }) {
 export default function HomePage() {
     return (
         <main className="mx-auto flex min-h-screen max-w-4xl flex-col gap-14 px-8 py-16">
-            <header className="flex items-center gap-5">
+            <header className="flex flex-col items-center gap-5">
                 <AppLogo animated className="aspect-3/5 h-24 w-auto shrink-0" />
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col items-center gap-3">
                     <h1 className="font-display text-5xl">Appothecary</h1>
                     <p className="text-lg opacity-80">Remedies for your app drawer.</p>
                 </div>

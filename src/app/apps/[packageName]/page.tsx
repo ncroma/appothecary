@@ -31,40 +31,42 @@ export default async function AppDetailPage({ params }: Props) {
     const appReviews = await getReviewsForApp(packageName);
 
     return (
-        <main className="mx-auto flex min-h-screen max-w-3xl flex-col gap-8 px-8 py-12">
+        <main className="mx-auto flex min-h-screen max-w-3xl flex-col gap-8 p-4 sm:p-8">
             <ScrollToTop />
             <Link href="/" className="text-sm text-herb hover:underline">
                 ← Back to the shelves
             </Link>
 
-            {app.graphicUrl && (
-                <div className="relative aspect-2/1 overflow-hidden rounded-sm bg-vial sm:aspect-3/1">
-                    <Image src={app.graphicUrl} loading="eager" alt="" fill sizes="(max-width: 768px) 100vw, 768px" className="object-cover" />
-                </div>
-            )}
+            <div className="flex flex-col gap-8 sm:flex-col-reverse">
+                <header className="flex flex-col items-center gap-5 sm:flex-row">
+                    {app.iconUrl ? (
+                        <Image src={app.iconUrl} priority alt="" width={96} height={96} className="size-24 shrink-0 rounded-2xl bg-vial" />
+                    ) : (
+                        <div aria-hidden className="size-24 shrink-0 rounded-2xl bg-vial" />
+                    )}
+                    <div className="min-w-0 text-center sm:text-left">
+                        <h1 className="font-display text-4xl">{app.name}</h1>
+                        {app.developer && <p className="mt-1 opacity-70">{app.developer}</p>}
+                    </div>
+                </header>
 
-            <header className="flex items-center gap-5">
-                {app.iconUrl ? (
-                    <Image src={app.iconUrl} alt="" width={96} height={96} className="size-24 shrink-0 rounded-2xl bg-vial" />
-                ) : (
-                    <div aria-hidden className="size-24 shrink-0 rounded-2xl bg-vial" />
+                {app.graphicUrl && (
+                    <div className="relative aspect-2/1 overflow-hidden rounded-sm bg-vial sm:aspect-3/1">
+                        <Image src={app.graphicUrl} priority alt="" fill sizes="(max-width: 768px) 100vw, 768px" className="object-cover" />
+                    </div>
                 )}
-                <div className="min-w-0">
-                    <h1 className="font-display text-4xl">{app.name}</h1>
-                    {app.developer && <p className="mt-1 opacity-70">{app.developer}</p>}
-                </div>
-            </header>
+            </div>
 
             <section className="grid grid-cols-3 gap-3">
-                <div className="flex flex-col gap-1 rounded-sm surface-vial p-4">
+                <div className="flex flex-col gap-1 rounded-sm surface-vial p-2 sm:p-4">
                     <span className="font-mono text-xs uppercase tracking-[0.15em] text-herb">Rating</span>
                     <span className="font-mono text-lg">{app.ratingAvg?.toFixed(1) ?? "—"} ★</span>
                 </div>
-                <div className="flex flex-col gap-1 rounded-sm surface-vial p-4">
+                <div className="flex flex-col gap-1 rounded-sm surface-vial p-2 sm:p-4">
                     <span className="font-mono text-xs uppercase tracking-[0.15em] text-herb">Downloads</span>
                     <span className="font-mono text-lg">{formatDownloads(app.downloads)}</span>
                 </div>
-                <div className="flex flex-col gap-1 rounded-sm surface-vial p-4">
+                <div className="flex flex-col gap-1 rounded-sm surface-vial p-2 sm:p-4">
                     <span className="font-mono text-xs uppercase tracking-[0.15em] text-herb">Age</span>
                     <span className="font-mono text-lg">{app.ageRating ?? "—"}</span>
                 </div>
