@@ -78,7 +78,7 @@ export function ReviewsSection({ packageName, reviews }: { packageName: string; 
 
     return (
         <section className="flex flex-col gap-5">
-            <h2 className="font-mono text-xs uppercase tracking-[0.2em] text-herb">Visitor notes · {optimisticReviews.length}</h2>
+            <h2 className="font-mono text-xs uppercase tracking-[0.2em] text-herb">Patient notes · {optimisticReviews.length}</h2>
 
             {!hydrated || isSessionPending ? (
                 <div aria-hidden className="h-48 animate-pulse rounded-sm bg-foam/8" />
@@ -174,7 +174,7 @@ export function ReviewsSection({ packageName, reviews }: { packageName: string; 
                     </div>
                 </form>
             ) : (
-                <p className="rounded-sm surface-vial p-4 text-sm opacity-80">Sign in (top right) to leave a note for the next visitor.</p>
+                <p className="rounded-sm surface-vial p-4 text-sm opacity-80">Sign in (top right) to leave a note for the next patient.</p>
             )}
 
             {optimisticReviews.length > 0 ? (

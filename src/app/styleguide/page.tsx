@@ -63,7 +63,7 @@ export default function StyleguidePage() {
                 <h2 className="font-mono text-xs uppercase tracking-[0.2em] text-herb">Type specimens</h2>
                 <div>
                     <p className="mb-2 font-mono text-xs opacity-60">font-display · Libre Caslon Text</p>
-                    <p className="font-display text-4xl">Remedies for your app drawer.</p>
+                    <p className="font-display text-4xl">Apps for what ails you.</p>
                 </div>
                 <div>
                     <p className="mb-2 font-mono text-xs opacity-60">font-sans · Archivo · the default</p>

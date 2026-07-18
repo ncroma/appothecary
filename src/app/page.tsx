@@ -43,7 +43,7 @@ export default function HomePage() {
                 <AppLogo animated className="aspect-3/5 h-24 w-auto shrink-0" />
                 <div className="flex flex-col items-center gap-3">
                     <h1 className="font-display text-5xl">Appothecary</h1>
-                    <p className="text-lg opacity-80">Remedies for your app drawer.</p>
+                    <p className="text-lg opacity-80">Apps for what ails you.</p>
                 </div>
             </header>
 
@@ -53,8 +53,8 @@ export default function HomePage() {
                 <Shelf title="Dispensary picks" load={() => getCuratedApps(12)} />
             </Suspense>
 
-            <Suspense fallback={<ShelfSkeleton title="Most Downloaded" />}>
-                <Shelf title="Most Downloaded" load={() => getTopApps(12)} />
+            <Suspense fallback={<ShelfSkeleton title="Most Dispensed" />}>
+                <Shelf title="Most Dispensed" load={() => getTopApps(12)} />
             </Suspense>
         </main>
     );
