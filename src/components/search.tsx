@@ -7,16 +7,16 @@ import type { App } from "@/db/queries";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
 
 const MODES = {
-    needs: {
-        label: "By needs",
-        placeholder: "Describe what you need…",
+    symptom: {
+        label: "By symptom",
+        placeholder: "What ails you?",
         minLength: 5,
         debounce: 600,
         endpoint: "/api/search/semantic",
-        empty: "No remedy matches those needs."
+        empty: "No remedy matches those symptoms."
     },
     name: {
-        label: "By label",
+        label: "By name",
         placeholder: "Search the shelves…",
         minLength: 2,
         debounce: 300,
@@ -28,7 +28,7 @@ const MODES = {
 type SearchMode = keyof typeof MODES;
 
 export function Search() {
-    const [mode, setMode] = useState<SearchMode>("needs");
+    const [mode, setMode] = useState<SearchMode>("symptom");
     const [query, setQuery] = useState("");
     const [lastCleared, setLastCleared] = useState("");
     const config = MODES[mode];

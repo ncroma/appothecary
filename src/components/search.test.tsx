@@ -137,9 +137,9 @@ describe("Search", () => {
 
         typeQuery("obscure potion");
         await settleDebounce();
-        expect(screen.queryByText("No remedy matches those needs.")).not.toBeInTheDocument();
+        expect(screen.queryByText("No remedy matches those symptoms.")).not.toBeInTheDocument();
 
         await respond([]);
-        expect(screen.getByText("No remedy matches those needs.")).toBeInTheDocument();
+        expect(screen.getByText("No remedy matches those symptoms.")).toBeInTheDocument();
     });
 });
