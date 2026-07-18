@@ -30,9 +30,11 @@ type SearchMode = keyof typeof MODES;
 export function Search() {
     const [mode, setMode] = useState<SearchMode>("needs");
     const [query, setQuery] = useState("");
+    const [lastCleared, setLastCleared] = useState("");
     const config = MODES[mode];
-    const debouncedQuery = useDebouncedValue(query.trim(), config.debounce);
-    const enabled = debouncedQuery.length >= config.minLength && query.trim().length >= config.minLength;
+    const trimmedQuery = query.trim();
+    const debouncedQuery = useDebouncedValue(trimmedQuery, config.debounce);
+    const enabled = debouncedQuery.length >= config.minLength && trimmedQuery.length >= config.minLength;
 
     const {
         data: results,
@@ -46,13 +48,25 @@ export function Search() {
             return res.json();
         },
         enabled,
-        staleTime: 60_000
+        staleTime: 60_000,
+        placeholderData: (previousData, previousQuery) => (previousQuery?.queryKey[1] === mode && previousQuery.queryKey[2] !== lastCleared ? previousData : undefined)
     });
 
-    const stale = isFetching || query.trim() !== debouncedQuery;
+    const stale = isFetching || trimmedQuery !== debouncedQuery;
+    const resultsWereCleared = debouncedQuery === lastCleared;
+    const stillTyping = trimmedQuery !== debouncedQuery;
+    const hideResults = resultsWereCleared && stillTyping;
+
+    const handleQueryInputChange = (nextQuery: string) => {
+        if (nextQuery === query) return;
+        if (nextQuery.trim().length < config.minLength) {
+            setLastCleared(debouncedQuery);
+        }
+        setQuery(nextQuery);
+    };
 
     return (
-        <section className="flex flex-col gap-3 min-h-66">
+        <section className="flex flex-col gap-3 min-h-52">
             <div className="flex gap-2">
                 {(Object.keys(MODES) as SearchMode[]).map((key) => (
                     <button
@@ -73,7 +87,7 @@ export function Search() {
                 <input
                     type="search"
                     value={query}
-                    onChange={(event) => setQuery(event.target.value)}
+                    onChange={(event) => handleQueryInputChange(event.target.value)}
                     placeholder={config.placeholder}
                     className="w-full rounded-sm surface-vial px-4 py-3 pr-10 placeholder:opacity-50 outline-none focus-visible:ring-1 focus-visible:ring-elixir/60 [&::-webkit-search-cancel-button]:hidden"
                 />
@@ -81,7 +95,7 @@ export function Search() {
                     <button
                         type="button"
                         aria-label="Clear search"
-                        onClick={() => setQuery("")}
+                        onClick={() => handleQueryInputChange("")}
                         className="absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer text-sm text-foam/60 transition-colors hover:text-foam"
                     >
                         ✕
@@ -91,9 +105,9 @@ export function Search() {
 
             {enabled && (
                 <div aria-live="polite" className="flex flex-col gap-3">
-                    <p className="font-mono text-xs uppercase tracking-[0.2em] text-herb">{stale ? "Steeping…" : `Results · ${results?.length ?? 0}`}</p>
+                    <p className="font-mono text-xs uppercase tracking-[0.2em] text-herb">{stale ? "Steeping…" : `In stock · ${results?.length ?? 0}`}</p>
 
-                    {results && results.length > 0 && (
+                    {results && results.length > 0 && !hideResults && (
                         <ul className={`grid grid-cols-1 gap-3 transition-opacity duration-200 sm:grid-cols-2 lg:grid-cols-3 ${stale ? "opacity-40" : ""}`}>
                             {results.map((app) => (
                                 <li key={app.packageName}>
@@ -105,7 +119,7 @@ export function Search() {
 
                     {results?.length === 0 && !stale && <p className="max-w-prose text-sm opacity-70">{config.empty}</p>}
 
-                    {isError && <p className="text-sm text-oxblood">The cauldron hiccuped — try that search again.</p>}
+                    {isError && <p className="text-sm text-oxblood">The dispensary caught fire — try again later.</p>}
                 </div>
             )}
         </section>
