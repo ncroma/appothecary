@@ -3,6 +3,7 @@ import { db } from "../src/db";
 import { apps } from "../src/db/schema";
 import { fetchAppMeta, fetchTopApps, type AppInsert } from "../src/lib/aptoide";
 import { FAVORITES } from "./favorites";
+import { CATALOG } from "./catalog";
 import { chunk } from "../src/lib/chunk";
 
 const TOP_LIMIT = 250;
@@ -25,8 +26,8 @@ async function main() {
     console.log(`Fetching top ${TOP_LIMIT} from the charts…`);
     const top = await fetchTopApps(TOP_LIMIT);
 
-    const refs = [...new Set<string | number>([...top, ...FAVORITES])];
-    console.log(`${refs.length} refs to ingest (${top.length} chart + ${FAVORITES.length} favorites, deduped)`);
+    const refs = [...new Set<string | number>([...top, ...FAVORITES, ...CATALOG])];
+    console.log(`${refs.length} refs to ingest (${top.length} chart + ${FAVORITES.length} favorites + ${CATALOG.length} catalog, deduped)`);
 
     const rows: AppInsert[] = [];
     const missing: (string | number)[] = [];
