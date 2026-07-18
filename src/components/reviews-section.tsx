@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { deleteReview, submitReview, type ReviewActionState } from "@/app/apps/[packageName]/actions";
 import { authClient } from "@/lib/auth-client";
 import { useAppDispatch } from "@/store/hooks";
+import { useHydrated } from "@/hooks/use-hydrated";
 import { toastAdded } from "@/store/toastsSlice";
 import type { ReviewWithAuthor } from "@/db/queries";
 
@@ -35,6 +36,7 @@ function RatingStars({ rating }: { rating: number }) {
 }
 
 export function ReviewsSection({ packageName, reviews }: { packageName: string; reviews: ReviewWithAuthor[] }) {
+    const hydrated = useHydrated();
     const { data: session, isPending: isSessionPending } = authClient.useSession();
     const dispatch = useAppDispatch();
     const formRef = useRef<HTMLFormElement>(null);
@@ -78,7 +80,7 @@ export function ReviewsSection({ packageName, reviews }: { packageName: string; 
         <section className="flex flex-col gap-5">
             <h2 className="font-mono text-xs uppercase tracking-[0.2em] text-herb">Visitor notes · {optimisticReviews.length}</h2>
 
-            {isSessionPending ? (
+            {!hydrated || isSessionPending ? (
                 <div aria-hidden className="h-48 animate-pulse rounded-sm bg-foam/8" />
             ) : session ? (
                 <form ref={formRef} action={formAction} className="flex flex-col gap-3 rounded-sm surface-vial p-4">

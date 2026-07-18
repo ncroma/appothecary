@@ -2,28 +2,37 @@
 
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { authClient } from "@/lib/auth-client";
+import { useHydrated } from "@/hooks/use-hydrated";
 
 export function AuthWidget() {
+    const hydrated = useHydrated();
     const { data: session, isPending } = authClient.useSession();
     const pathname = usePathname();
     const router = useRouter();
-    const [isSigningIn, startSignIn] = useTransition();
+    const [isSigningIn, setIsSigningIn] = useState(false);
     const [isSigningOut, startSignOut] = useTransition();
 
-    if (isPending) return <div aria-hidden className="h-8 w-24 animate-pulse rounded-sm bg-foam/8" />;
+    useEffect(() => {
+        const reset = (event: PageTransitionEvent) => {
+            if (event.persisted) setIsSigningIn(false);
+        };
+        window.addEventListener("pageshow", reset);
+        return () => window.removeEventListener("pageshow", reset);
+    }, []);
+
+    if (!hydrated || isPending) return <div aria-hidden className="h-8 w-24 animate-pulse rounded-sm bg-foam/8" />;
 
     if (!session) {
         return (
             <button
                 type="button"
                 disabled={isSigningIn}
-                onClick={() =>
-                    startSignIn(async () => {
-                        await authClient.signIn.social({ provider: "github", callbackURL: pathname });
-                    })
-                }
+                onClick={() => {
+                    setIsSigningIn(true);
+                    authClient.signIn.social({ provider: "github", callbackURL: pathname }).catch(() => setIsSigningIn(false));
+                }}
                 className="cursor-pointer rounded-sm bg-elixir px-4 py-1.5 text-sm font-semibold text-bottle transition-opacity hover:opacity-90 disabled:opacity-60"
             >
                 {isSigningIn ? "Opening GitHub…" : "Sign in with GitHub"}
