@@ -48,6 +48,16 @@ export async function fetchTopApps(limit: number): Promise<string[]> {
     return packages.slice(0, limit);
 }
 
+export function canonicalAptoideUrl(raw: string): string {
+    try {
+        const url = new URL(raw);
+        if (!url.hostname.endsWith(".aptoide.com")) return raw;
+        return `${url.origin}/app`;
+    } catch {
+        return raw;
+    }
+}
+
 export function mapAppMeta(json: AptoideMeta): AppInsert | null {
     const data = json.data;
 
@@ -63,7 +73,7 @@ export function mapAppMeta(json: AptoideMeta): AppInsert | null {
         downloads: data.stats?.downloads ?? null,
         ratingAvg: data.stats?.prating?.avg ?? data.stats?.rating?.avg ?? null,
         ageRating: data.age?.title ?? null,
-        aptoideUrl: data.urls?.w ?? null
+        aptoideUrl: data.urls?.w ? canonicalAptoideUrl(data.urls.w) : null
     };
 }
 

@@ -1,5 +1,25 @@
 import { describe, expect, it } from "vitest";
-import { mapAppMeta, type AptoideMeta } from "./aptoide";
+import { canonicalAptoideUrl, mapAppMeta, type AptoideMeta } from "./aptoide";
+
+describe("canonicalAptoideUrl", () => {
+    it("strips store params and forces the app path", () => {
+        expect(canonicalAptoideUrl("https://smart-switch.en.aptoide.com/?store_name=mods-mods-ofisial&app_id=62946177")).toBe(
+            "https://smart-switch.en.aptoide.com/app"
+        );
+    });
+
+    it("leaves an already canonical url unchanged", () => {
+        expect(canonicalAptoideUrl("https://bigo-live.en.aptoide.com/app")).toBe("https://bigo-live.en.aptoide.com/app");
+    });
+
+    it("leaves non-aptoide hosts unchanged", () => {
+        expect(canonicalAptoideUrl("https://example.com/whatever?x=1")).toBe("https://example.com/whatever?x=1");
+    });
+
+    it("leaves unparseable values unchanged", () => {
+        expect(canonicalAptoideUrl("not a url")).toBe("not a url");
+    });
+});
 
 describe("mapAppMeta", () => {
     it("handles happy path", () => {
@@ -14,7 +34,7 @@ describe("mapAppMeta", () => {
                 age: { title: "Everyone" },
                 developer: { name: "Test Developer" },
                 media: { description: "Test Description" },
-                urls: { w: "aptoide_url" },
+                urls: { w: "https://test-app.en.aptoide.com/?store_name=some-store&app_id=123" },
                 stats: {
                     downloads: 1000,
                     rating: { avg: 4.5, total: 100 },
@@ -34,7 +54,7 @@ describe("mapAppMeta", () => {
             downloads: 1000,
             ratingAvg: 4.9,
             ageRating: "Everyone",
-            aptoideUrl: "aptoide_url"
+            aptoideUrl: "https://test-app.en.aptoide.com/app"
         });
     });
 
