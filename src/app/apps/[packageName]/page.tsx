@@ -72,7 +72,7 @@ export default async function AppDetailPage({ params }: Props) {
                 </div>
             </section>
 
-            {app.aptoideUrl && (
+            {app.aptoideUrl ? (
                 <a
                     href={app.aptoideUrl}
                     target="_blank"
@@ -80,6 +80,15 @@ export default async function AppDetailPage({ params }: Props) {
                     className="self-start rounded-sm bg-elixir px-5 py-2.5 text-sm font-semibold text-bottle transition-opacity hover:opacity-90"
                 >
                     Get it on Aptoide ↗
+                </a>
+            ) : (
+                <a
+                    href={`https://en.aptoide.com/search?query=${encodeURIComponent(app.name)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="self-start rounded-sm border border-foam/15 px-5 py-2.5 text-sm font-semibold text-foam/90 transition-colors hover:bg-foam/10"
+                >
+                    Find it on Aptoide ↗
                 </a>
             )}
 
