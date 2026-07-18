@@ -5,7 +5,7 @@
 > Apps for what ails you — discover, review, and curate Android apps.
 
 **Letterboxd for apps.** Browse a stocked catalog of Android apps, describe
-what you need in plain words ("something for tracking hikes offline") and get
+your symptom in plain words ("something for tracking hikes offline") and get
 prescriptions via AI semantic search, then sign in and leave a patient note
 for the next visitor.
 
@@ -17,7 +17,7 @@ for the next visitor.
 
 ## Features
 
-- **Search by needs** — natural-language search over the catalog. App
+- **Search by symptom** — natural-language search over the catalog. App
   metadata is embedded with OpenAI `text-embedding-3-small` and matched by
   cosine similarity in Postgres (pgvector, HNSW index), with a similarity
   floor so nonsense queries return an honest empty state.
