@@ -38,7 +38,7 @@ function ShelfSkeleton({ title }: { title: string }) {
 
 export default function HomePage() {
     return (
-        <main className="mx-auto flex min-h-screen max-w-4xl flex-col gap-14 px-4 py-12 sm:px-8 sm:py-16">
+        <main className="mx-auto flex min-h-screen max-w-4xl flex-col gap-14 px-4 py-12 sm:px-8 sm:py-24">
             <header className="flex flex-col items-center gap-5">
                 <AppLogo animated className="aspect-3/5 h-24 w-auto shrink-0" />
                 <div className="flex flex-col items-center gap-3">

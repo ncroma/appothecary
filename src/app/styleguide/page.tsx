@@ -36,7 +36,7 @@ const sampleApp: App = {
 
 export default function StyleguidePage() {
     return (
-        <main className="mx-auto flex max-w-4xl flex-col gap-16 px-8 py-16">
+        <main className="mx-auto flex max-w-4xl flex-col gap-16 px-8 py-24">
             <header>
                 <p className="font-mono text-xs uppercase tracking-[0.2em] text-herb">Appothecary · living documentation</p>
                 <h1 className="mt-3 font-display text-5xl">Styleguide</h1>
