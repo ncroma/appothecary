@@ -21,9 +21,22 @@ const libreCaslon = Libre_Caslon_Text({
     variable: "--font-caslon"
 });
 
+const description = "Apps for what ails you — discover, review, and curate Android apps.";
+
 export const metadata: Metadata = {
+    metadataBase: new URL("https://appothecary.vercel.app"),
     title: "Appothecary",
-    description: "Apps for what ails you — discover, review, and curate Android apps."
+    description,
+    openGraph: {
+        title: "Appothecary",
+        description,
+        url: "/",
+        siteName: "Appothecary",
+        type: "website"
+    },
+    twitter: {
+        card: "summary_large_image"
+    }
 };
 
 export const viewport: Viewport = {

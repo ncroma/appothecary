@@ -1,0 +1,1 @@
+Appothecary — apps for what ails you. A dark apothecary-styled homepage with a vial-bodied android logo and a symptom search bar.

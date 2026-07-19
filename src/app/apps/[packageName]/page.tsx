@@ -17,9 +17,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const app = await getApp(packageName);
     if (!app) return { title: "Not stocked — Appothecary" };
 
+    const title = `${app.name} — Appothecary`;
+    const description = app.description?.slice(0, 160) ?? `${app.name} on the Appothecary shelves.`;
+
     return {
-        title: `${app.name} — Appothecary`,
-        description: app.description?.slice(0, 160) ?? `${app.name} on the Appothecary shelves.`
+        title,
+        description,
+        openGraph: {
+            title,
+            description,
+            siteName: "Appothecary",
+            type: "website",
+            images: ["/opengraph-image.png"]
+        }
     };
 }
 
