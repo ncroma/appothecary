@@ -1,6 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Provider } from "react-redux";
+import { makeStore } from "@/store";
 import type { App } from "@/db/queries";
 import { Search } from "./search";
 
@@ -27,17 +29,28 @@ type PendingRequest = { url: string; resolve: (apps: App[]) => void };
 
 let pendingRequests: PendingRequest[];
 
-function renderSearch() {
-    const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
-    render(
-        <QueryClientProvider client={queryClient}>
-            <Search />
-        </QueryClientProvider>
+function renderSearch(providers?: { store: ReturnType<typeof makeStore>; queryClient: QueryClient }) {
+    const store = providers?.store ?? makeStore();
+    const queryClient = providers?.queryClient ?? new QueryClient({ defaultOptions: { queries: { retry: false } } });
+    const view = render(
+        <Provider store={store}>
+            <QueryClientProvider client={queryClient}>
+                <Search />
+            </QueryClientProvider>
+        </Provider>
     );
+    return { store, queryClient, unmount: view.unmount };
 }
 
 function typeQuery(value: string) {
     fireEvent.change(screen.getByRole("searchbox"), { target: { value } });
+}
+
+async function typeLikeAHuman(value: string) {
+    for (let end = 1; end <= value.length; end++) {
+        typeQuery(value.slice(0, end));
+        await act(() => vi.advanceTimersByTimeAsync(90));
+    }
 }
 
 async function settleDebounce() {
@@ -120,16 +133,71 @@ describe("Search", () => {
 
         fireEvent.click(screen.getByRole("button", { name: "Clear search" }));
         expect(screen.queryByText("Calm")).not.toBeInTheDocument();
+        expect(screen.getByRole("searchbox")).toHaveFocus();
 
-        typeQuery("chess trainer");
+        await act(() => vi.advanceTimersByTimeAsync(700));
+        await typeLikeAHuman("chess trainer");
         expect(screen.queryByText("Calm")).not.toBeInTheDocument();
-        expect(screen.getByText("Steeping…")).toBeInTheDocument();
 
         await settleDebounce();
         expect(screen.queryByText("Calm")).not.toBeInTheDocument();
+        expect(screen.getByText("Steeping…")).toBeInTheDocument();
 
         await respond([makeApp("Lichess")]);
         expect(screen.getByText("Lichess")).toBeInTheDocument();
+    });
+
+    it("steeps fresh when the same query is retyped after a clear", async () => {
+        renderSearch();
+
+        typeQuery("meditation");
+        await settleDebounce();
+        await respond([makeApp("Calm")]);
+
+        fireEvent.click(screen.getByRole("button", { name: "Clear search" }));
+        await act(() => vi.advanceTimersByTimeAsync(61_000));
+        expect(screen.queryByText("Calm")).not.toBeInTheDocument();
+
+        await typeLikeAHuman("meditation");
+        expect(screen.queryByText("Calm")).not.toBeInTheDocument();
+        await settleDebounce();
+        expect(screen.queryByText("Calm")).not.toBeInTheDocument();
+        expect(screen.getByText("Steeping…")).toBeInTheDocument();
+
+        await respond([makeApp("Headspace")]);
+        expect(screen.getByText("Headspace")).toBeInTheDocument();
+    });
+
+    it("never resurrects results after backspacing the query away", async () => {
+        renderSearch();
+
+        typeQuery("meditation");
+        await settleDebounce();
+        await respond([makeApp("Calm")]);
+
+        for (const value of ["medita", "medi", "me", ""]) typeQuery(value);
+        await act(() => vi.advanceTimersByTimeAsync(700));
+        expect(screen.queryByText("Calm")).not.toBeInTheDocument();
+
+        typeQuery("chess trainer");
+        expect(screen.queryByText("Calm")).not.toBeInTheDocument();
+        await settleDebounce();
+        expect(screen.queryByText("Calm")).not.toBeInTheDocument();
+    });
+
+    it("restores the search as it was left when coming back from a detail page", async () => {
+        const { store, queryClient, unmount } = renderSearch();
+
+        typeQuery("meditation");
+        await settleDebounce();
+        await respond([makeApp("Calm")]);
+
+        unmount();
+        renderSearch({ store, queryClient });
+
+        expect(screen.getByRole("searchbox")).toHaveValue("meditation");
+        expect(screen.getByText("Calm")).toBeInTheDocument();
+        expect(pendingRequests).toHaveLength(0);
     });
 
     it("shows the empty message only once the brew settles", async () => {

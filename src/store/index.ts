@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import toastsReducer from "./toastsSlice";
+import searchReducer from "./searchSlice";
 
 export function makeStore() {
     return configureStore({
         reducer: {
-            toasts: toastsReducer
+            toasts: toastsReducer,
+            search: searchReducer
         }
     });
 }
